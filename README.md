@@ -1,36 +1,92 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Oji Systems LLC — Website
 
-## Getting Started
+Marketing site for [ojisystems.com](https://ojisystems.com). Built with Next.js, Tailwind CSS v4, shadcn/ui, and zod.
 
-First, run the development server:
+## Development
 
 ```bash
+npm install
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+Open [http://localhost:3000](http://localhost:3000).
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+### Environment variables
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+Copy `.env.example` to `.env.local` and set:
 
-## Learn More
+| Variable | Description |
+|----------|-------------|
+| `RESEND_API_KEY` | Resend API key for the contact form |
+| `CONTACT_TO` | Inbox that receives form submissions (default: `info@ojisystems.com`) |
+| `CONTACT_FROM` | Verified sender in Resend (use your domain after DNS is live) |
 
-To learn more about Next.js, take a look at the following resources:
+Without `RESEND_API_KEY`, the contact form returns a friendly error and `mailto:` links still work.
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+## Deploy to Vercel
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+1. Push this repo to GitHub.
+2. Import the project in [Vercel](https://vercel.com).
+3. Add environment variables from `.env.example`.
+4. Add domains `ojisystems.com` and `www.ojisystems.com`.
+5. Apply the DNS records Vercel shows in **Cloudflare** (see below).
 
-## Deploy on Vercel
+## DNS and email (Cloudflare)
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+Domain registration can stay at GoDaddy. Point nameservers to Cloudflare for DNS and Email Routing.
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+### 1. Move DNS to Cloudflare
+
+1. Add `ojisystems.com` to Cloudflare (free plan).
+2. At GoDaddy, replace nameservers with the two Cloudflare nameservers.
+3. Wait for propagation (often 15–60 minutes).
+
+### 2. Website records (Vercel)
+
+In Cloudflare DNS, add the records Vercel provides when you attach the domain (typically `A`/`CNAME` for `@` and `www`).
+
+**Important:** If you have an existing **A record for a client subdomain** pointing at your DigitalOcean droplet, **do not change or delete it**. Only add or update records for `@` and `www` per Vercel’s instructions.
+
+Recommended proxy: orange cloud (proxied) for `@` and `www` with SSL mode **Full (strict)** once Vercel certificates are active.
+
+### 3. Inbound email — Cloudflare Email Routing (free)
+
+1. In Cloudflare → **Email** → **Email Routing** → enable.
+2. Create routes:
+   - `ayo@ojisystems.com` → your personal inbox
+   - `info@ojisystems.com` → your personal inbox (or a label/filter)
+3. Cloudflare adds MX and related records automatically.
+4. Complete SPF/DMARC steps in the Cloudflare wizard.
+
+**Sending as `@ojisystems.com`:** Routing is primarily receive/forward. For outbound:
+
+- Reply from the inbox that receives forwards, or
+- Configure Gmail **Send mail as** for your domain, or
+- Send invoices from **Mercury Bank** (recommended for billing).
+
+### 4. Mercury Bank (invoices)
+
+Client invoices are sent from Mercury directly. No website integration is required for v1.
+
+## Brand assets
+
+- Guidelines: [`brand/BRAND.md`](brand/BRAND.md)
+- Tokens: [`brand/tokens.css`](brand/tokens.css)
+- Logos: [`public/logo.svg`](public/logo.svg), [`public/logo-mark.svg`](public/logo-mark.svg)
+
+## Scripts
+
+```bash
+npm run build   # production build
+npm run start   # serve production build
+npm run lint    # ESLint
+```
+
+## Pre-launch checklist
+
+- [ ] `https://ojisystems.com` loads the site
+- [ ] Client subdomain on the droplet still works (unchanged DNS record)
+- [ ] No client or project names on the public site without approval
+- [ ] Test `info@ojisystems.com` inbound routing
+- [ ] Contact form delivers with Resend (or mailto fallback confirmed)
+- [ ] Mobile navigation and form validation work

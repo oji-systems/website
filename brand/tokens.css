@@ -1,0 +1,26 @@
+/**
+ * Oji Systems LLC brand tokens (v2)
+ * Warm two-tone with sienna accent.
+ * Imported in src/app/globals.css
+ */
+
+:root {
+  /* Surfaces */
+  --oji-bone: #f4efe6;
+  --oji-paper: #fbf8f1;
+  --oji-paper-elev: #f7f2e9;
+
+  /* Type */
+  --oji-ink: #0e0e10;
+  --oji-stone: #6b675f;
+  --oji-stone-muted: #9a958b;
+
+  /* Accent */
+  --oji-sienna: #c2410c;
+  --oji-sienna-deep: #9a3309;
+  --oji-sienna-tint: rgba(194, 65, 12, 0.08);
+
+  /* Lines */
+  --oji-hairline: rgba(14, 14, 16, 0.08);
+  --oji-hairline-strong: rgba(14, 14, 16, 0.14);
+}
