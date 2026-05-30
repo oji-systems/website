@@ -13,6 +13,16 @@ const nextConfig: NextConfig = {
         destination: "/studio",
         permanent: true,
       },
+      {
+        source: "/index.html",
+        destination: "/",
+        permanent: true,
+      },
+      {
+        source: "/home",
+        destination: "/",
+        permanent: true,
+      },
     ];
   },
 };
