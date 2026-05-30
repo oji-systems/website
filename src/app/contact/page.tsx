@@ -58,7 +58,8 @@ export default function ContactPage() {
             </ContactRow>
             <ContactRow label="Hours">
               <span className="text-ink">
-                Mon to Fri, Central Time. We reply within two business days.
+                Mon to Fri, Central Time. We reply within 24 hours on business
+                days.
               </span>
             </ContactRow>
           </div>

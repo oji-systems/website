@@ -146,7 +146,8 @@ export function ContactForm() {
 
       {status === "success" ? (
         <p className="text-sm text-[color:var(--oji-sienna)]" role="status">
-          Message sent. We will be in touch.
+          Message sent. Check your inbox for a confirmation. We reply within 24
+          hours on business days.
         </p>
       ) : null}
 

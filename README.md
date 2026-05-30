@@ -19,7 +19,8 @@ Copy `.env.example` to `.env.local` and set:
 |----------|-------------|
 | `RESEND_API_KEY` | Resend API key for the contact form |
 | `CONTACT_TO` | Inbox that receives form submissions (default: `info@ojisystems.com`) |
-| `CONTACT_FROM` | Verified sender in Resend (use your domain after DNS is live) |
+| `CONTACT_FROM` | Verified sender for internal notification emails (e.g. `contact@ojisystems.com`) |
+| `AUTO_REPLY_FROM` | Verified sender for submitter auto-reply (default: `info@ojisystems.com`) |
 
 Without `RESEND_API_KEY`, the contact form returns a friendly error and `mailto:` links still work.
 

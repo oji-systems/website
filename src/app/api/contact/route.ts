@@ -1,5 +1,10 @@
 import { NextResponse } from "next/server";
 import { Resend } from "resend";
+import {
+  buildContactAutoReplyHtml,
+  buildContactAutoReplyText,
+  contactAutoReplySubject,
+} from "@/lib/emails/contact-auto-reply";
 import { siteConfig } from "@/lib/site";
 import { contactFormSchema } from "@/lib/validations/contact";
 
@@ -24,10 +29,10 @@ export async function POST(request: Request) {
   const { name, email, message } = parsed.data;
 
   const apiKey = process.env.RESEND_API_KEY;
-  const contactTo =
-    process.env.CONTACT_TO ?? siteConfig.emails.info;
-  const fromEmail =
-    process.env.CONTACT_FROM ?? "onboarding@resend.dev";
+  const contactTo = process.env.CONTACT_TO ?? siteConfig.emails.info;
+  const fromEmail = process.env.CONTACT_FROM ?? "onboarding@resend.dev";
+  const autoReplyFrom =
+    process.env.AUTO_REPLY_FROM ?? siteConfig.emails.info;
 
   if (!apiKey) {
     return NextResponse.json(
@@ -46,20 +51,28 @@ export async function POST(request: Request) {
     to: [contactTo],
     replyTo: email,
     subject: `Contact from ${name} via ojisystems.com`,
-    text: [
-      `Name: ${name}`,
-      `Email: ${email}`,
-      "",
-      message,
-    ].join("\n"),
+    text: [`Name: ${name}`, `Email: ${email}`, "", message].join("\n"),
   });
 
   if (error) {
-    console.error("Resend error:", error);
+    console.error("Resend notification error:", error);
     return NextResponse.json(
       { error: "Failed to send message. Try email instead." },
       { status: 502 },
     );
+  }
+
+  const { error: autoReplyError } = await resend.emails.send({
+    from: `${siteConfig.shortName} <${autoReplyFrom}>`,
+    to: [email],
+    replyTo: siteConfig.emails.info,
+    subject: contactAutoReplySubject,
+    text: buildContactAutoReplyText(name),
+    html: buildContactAutoReplyHtml(name),
+  });
+
+  if (autoReplyError) {
+    console.error("Resend auto-reply error:", autoReplyError);
   }
 
   return NextResponse.json({ ok: true });
