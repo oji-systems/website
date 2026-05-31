@@ -9,6 +9,16 @@ export const siteConfig = {
     ayo: "ayo@ojisystems.com",
     info: "info@ojisystems.com",
   },
+  socialLinks: [
+    {
+      label: "LinkedIn",
+      href: "https://www.linkedin.com/company/oji-systems",
+    },
+    {
+      label: "Instagram",
+      href: "https://www.instagram.com/ojisystems/",
+    },
+  ],
 } as const;
 
 /** Work entries shown on the home page teaser (full list on /work). */

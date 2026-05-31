@@ -22,7 +22,7 @@ export function SiteFooter() {
             </p>
           </div>
 
-          <div className="md:col-span-3">
+          <div className="md:col-span-2">
             <p className="mono-caps text-stone">Pages</p>
             <ul className="mt-4 space-y-2">
               {navLinks.map((link) => (
@@ -39,7 +39,28 @@ export function SiteFooter() {
             </ul>
           </div>
 
-          <div className="md:col-span-4">
+          <div className="md:col-span-2">
+            <p className="mono-caps text-stone">Connect</p>
+            <ul className="mt-4 space-y-2 text-sm">
+              {siteConfig.socialLinks.map((link) => (
+                <li key={link.href}>
+                  <a
+                    href={link.href}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className={cn(
+                      focusRing,
+                      "rounded-sm text-ink hover:text-[color:var(--oji-sienna)]",
+                    )}
+                  >
+                    {link.label}
+                  </a>
+                </li>
+              ))}
+            </ul>
+          </div>
+
+          <div className="md:col-span-3">
             <p className="mono-caps text-stone">Contact</p>
             <ul className="mt-4 space-y-2 text-sm">
               <li>
